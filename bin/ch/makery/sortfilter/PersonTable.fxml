@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="600.0" maxWidth="920.0" minHeight="600.0" minWidth="920.0" prefHeight="600.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.sortfilter.PersonTableController">
+  <children>
+      <SplitPane dividerPositions="0.5" maxHeight="600.0" maxWidth="910.0" minHeight="600.0" minWidth="910.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane maxHeight="550.0" maxWidth="910.0" minHeight="550.0" minWidth="910.0" prefHeight="550.0" prefWidth="910.0">
+               <children>
+                  <TableView fx:id="personTable" maxHeight="550.0" maxWidth="905.0" minHeight="550.0" minWidth="905.0" prefHeight="550.0" prefWidth="905.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0">
+                     <columns>
+                        <TableColumn fx:id="majorColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="专业" />
+                        <TableColumn fx:id="classColumn" maxWidth="5000.0" minWidth="10.0" prefWidth="85.0" text="班级" />
+                        <TableColumn fx:id="nameColumn" prefWidth="85.0" text="姓名" />
+                        <TableColumn fx:id="studentIDColumn" prefWidth="105.0" text="学号" />
+                        <TableColumn fx:id="timeColumn" prefWidth="85.0" text="时间" />
+                        <TableColumn fx:id="compettitionColumn" prefWidth="85.0" text="比赛" />
+                        <TableColumn fx:id="levelColumn" prefWidth="85.0" text="等级" />
+                        <TableColumn fx:id="prizeColumn" prefWidth="85.0" text="奖次" />
+                        <TableColumn fx:id="workNameColumn" prefWidth="207.0" text="作品名称" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane maxHeight="50.0" maxWidth="900.0" minHeight="50.0" minWidth="900.0" prefHeight="50.0" prefWidth="900.0">
+               <children>
+                <HBox id="HBox" alignment="CENTER" layoutX="14.0" layoutY="10.0" spacing="5.0" AnchorPane.leftAnchor="20.0">
+                  <children>
+                    <Label text="过滤：" />
+                    <TextField fx:id="filterField" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+                  </children>
+                </HBox>
+                  <HBox layoutX="650.0" layoutY="10.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handlePic" text="查看证书" />
+                        <Button mnemonicParsing="false" onAction="#handleNewPerson" text="增加" />
+                        <Button mnemonicParsing="false" onAction="#handleEditPerson" text="编辑" />
+                        <Button mnemonicParsing="false" onAction="#handleDeletePerson" text="删除" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+  </children>
+</AnchorPane>
