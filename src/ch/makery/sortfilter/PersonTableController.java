@@ -38,23 +38,15 @@ public class PersonTableController {
     @FXML
     private TableView<Person> personTable;
     @FXML
-    private TableColumn<Person, String> majorColumn;
-    @FXML
-    private TableColumn<Person, String> classColumn;
-    @FXML
-    private TableColumn<Person, String> nameColumn;
-    @FXML
     private TableColumn<Person, String> timeColumn;
-    @FXML
-    private TableColumn<Person, String> studentIDColumn;
-    @FXML
-    private TableColumn<Person, String> compettitionColumn;
-    @FXML
-    private TableColumn<Person, String> workNameColumn;
     @FXML
     private TableColumn<Person, String> levelColumn;
     @FXML
-    private TableColumn<Person, String> prizeColumn;
+    private TableColumn<Person, String> majorColumn;
+    @FXML
+    private TableColumn<Person, String> workNameColumn;
+    @FXML
+    private TableColumn<Person, String> nameColumn;
     @FXML
     private TableColumn<Person, String> pathColumn;
 
@@ -72,18 +64,17 @@ public class PersonTableController {
         try {
 			while(rs.next()){
 			    // Í¨¹ý×Ö¶Î¼ìË÷
-				String major = rs.getString("major");
-			    String classNum = rs.getString("classNum");
-			    String name = rs.getString("name");
-			    String studentID = rs.getString("studentID");
-			    String time = rs.getString("time");
-			    String compettition = rs.getString("compettition");
+				String timeYear = rs.getString("timeYear");
+			    String timeMonth = rs.getString("timeMonth");
 			    String level = rs.getString("level");
 			    String prize = rs.getString("prize");
+			    String major = rs.getString("major");
+			    String grade = rs.getString("grade");
 			    String workName = rs.getString("workname");
+			    String name = rs.getString("name");
 			    String path = rs.getString("path");
 
-			    masterData.add(new Person(major, classNum, name, studentID, time, compettition, level, prize, workName, path));
+			    masterData.add(new Person(timeYear, timeMonth, level, prize, major, grade, workName, name, path));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -101,15 +92,11 @@ public class PersonTableController {
 	@FXML
 	private void initialize() {
 		// 0. Initialize the columns.
-		majorColumn.setCellValueFactory(cellData -> cellData.getValue().majorProperty());
-		classColumn.setCellValueFactory(cellData -> cellData.getValue().classNumProperty());
-		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-		timeColumn.setCellValueFactory(cellData -> cellData.getValue().timeProperty());
-		studentIDColumn.setCellValueFactory(cellData -> cellData.getValue().studentIDProperty());
-		compettitionColumn.setCellValueFactory(cellData -> cellData.getValue().compettitionProperty());
+		timeColumn.setCellValueFactory(cellData -> cellData.getValue().timeAllProperty() );
+		levelColumn.setCellValueFactory(cellData -> cellData.getValue().levelAllProperty());
+		majorColumn.setCellValueFactory(cellData -> cellData.getValue().majorAllProperty());
 		workNameColumn.setCellValueFactory(cellData -> cellData.getValue().workNameProperty());
-		levelColumn.setCellValueFactory(cellData -> cellData.getValue().levelProperty());
-		prizeColumn.setCellValueFactory(cellData -> cellData.getValue().prizeProperty());
+		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 
 		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
 		FilteredList<Person> filteredData = new FilteredList<>(masterData, p -> true);
@@ -125,9 +112,9 @@ public class PersonTableController {
 				// Compare first name and last name of every person with filter text.
 				String lowerCaseFilter = newValue.toLowerCase();
 
-				if (person.getMajor().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+				if (person.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
 					return true; // Filter matches first name.
-				} else if (person.getClassNum().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+				} else if (person.getWorkName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
 					return true; // Filter matches last name.
 				}
 				return false; // Does not match.
@@ -186,7 +173,7 @@ public class PersonTableController {
         Person tempPerson = new Person();
         boolean okClicked = Main.showPersonEditDialog(tempPerson);
         if (okClicked) {
-        	String[] arr = {tempPerson.getMajor(), tempPerson.getClassNum(), tempPerson.getName(), tempPerson.getStudentID(), tempPerson.getCompettition(), tempPerson.getTime(), tempPerson.getLevel(), tempPerson.getPrize(), tempPerson.getWorkName(), tempPerson.getPath()};//new String[10];
+        	String[] arr = {tempPerson.getTimeYear(), tempPerson.getTimeMonth(), tempPerson.getLevel(), tempPerson.getPrize(), tempPerson.getMajor(), tempPerson.getGrade(), tempPerson.getWorkName(), tempPerson.getName(), tempPerson.getPath()};
         	Sql mysql = new Sql();
         	mysql.connect();
         	mysql.add(arr);
@@ -205,7 +192,7 @@ public class PersonTableController {
         if (selectedPerson != null) {
             boolean okClicked = Main.showPersonEditDialog(selectedPerson);
             if (okClicked) {
-            	String[] arr = {selectedPerson.getMajor(), selectedPerson.getClassNum(), selectedPerson.getName(), selectedPerson.getStudentID(), selectedPerson.getCompettition(), selectedPerson.getTime(), selectedPerson.getLevel(), selectedPerson.getPrize(), selectedPerson.getWorkName(), selectedPerson.getPath()};//new String[10];
+            	String[] arr = {selectedPerson.getTimeYear(), selectedPerson.getTimeMonth(), selectedPerson.getLevel(), selectedPerson.getPrize(), selectedPerson.getMajor(), selectedPerson.getGrade(), selectedPerson.getWorkName(), selectedPerson.getName(), selectedPerson.getPath()};
             	Sql mysql = new Sql();
             	mysql.connect();
             	mysql.alter(arr);

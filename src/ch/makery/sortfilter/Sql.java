@@ -1,28 +1,41 @@
 package ch.makery.sortfilter;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Sql {
-
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/yxytest?characterEncoding=utf8&useSSL=true";
-
-    // 数据库的用户名与密码，需要根据自己的设置
-    private static final String USER = "root";
-    private static final String PASS = "2254655";
-
     Connection conn = null;
     Statement stmt = null;
 
+    public void checkTable() {
+  	      String sql = "CREATE TABLE IF NOT EXISTS tabtest " +
+                    "(timeYear      CHAR(50)    NOT NULL, " +
+                    " timeMonth     CHAR(50)     NOT NULL, " +
+                    " level         CHAR(50) NOT NULL, " +
+                    " prize         CHAR(50) NOT NULL,"+
+                    " major         CHAR(50) NOT NULL,"+
+                    " grade         CHAR(50) NOT NULL,"+
+                    " workName      CHAR(50) NOT NULL,"+
+                    " name          CHAR(50) NOT NULL,"+
+                    " path          CHAR(50) NOT NULL)";
+  	      try {
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
+
     public ResultSet inquire() {
     	try {
-                String sql;
-                sql = "SELECT * FROM tabtest";
-                ResultSet rs = stmt.executeQuery(sql);
-                return rs;
+            String sql;
+            sql = "SELECT * FROM tabtest";
+            ResultSet rs = stmt.executeQuery(sql);
+            return rs;
     	} catch (Exception e) {
     	       e.printStackTrace();
     	}
@@ -31,18 +44,25 @@ public class Sql {
     }
 
     public void connect() {
-    	// 注册 JDBC 驱动
     	try {
-    		Class.forName("com.mysql.jdbc.Driver");
-        	conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            stmt = conn.createStatement();
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  	      try {
+			conn = DriverManager.getConnection("jdbc:sqlite:yxytest.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    	} catch(SQLException se){
-    	      //Handle errors for JDBC
-    	      se.printStackTrace();
-    	} catch (Exception e) {
- 	       e.printStackTrace();
-    	}
+  	      try {
+			stmt = conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public void delete(String name, String workName) {
@@ -58,7 +78,7 @@ public class Sql {
 
     public void add(String[] arr) {
     	String sql;
-        sql = "insert into tabtest (major, classNum, name, studentID, compettition, time, level, prize, workname, path) values (\"" + arr[0] + "\", \"" + arr[1] + "\", \"" + arr[2] + "\", \"" + arr[3] + "\", \"" + arr[4] + "\", \"" + arr[5] + "\", \"" + arr[6] + "\", \"" + arr[7] + "\", \"" + arr[8] + "\", \"" + arr[9] + "\" )";
+        sql = "insert into tabtest (timeYear, timeMonth, level, prize, major, grade, workName, name, path) values (\"" + arr[0] + "\", \"" + arr[1] + "\", \"" + arr[2] + "\", \"" + arr[3] + "\", \"" + arr[4] + "\", \"" + arr[5] + "\", \"" + arr[6] + "\", \"" + arr[7] + "\", \"" + arr[8] + "\")";
         try {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
@@ -69,7 +89,7 @@ public class Sql {
 
     public void alter(String[] arr) {
     	String sql;
-    	sql = "update tabtest set major = \""+arr[0]+"\", classNum = \""+arr[1]+"\", name = \""+arr[2]+"\", studentID = \""+arr[3]+"\", compettition = \""+arr[4]+"\", time = \""+arr[5]+"\", level = \""+arr[6]+"\", prize = \""+arr[7]+"\", workname = \""+arr[8]+"\", path = \""+arr[9]+"\"";
+    	sql = "update tabtest set timeYear = \""+arr[0]+"\", timeMonth = \""+arr[1]+"\", level = \""+arr[2]+"\", prize = \""+arr[3]+"\", major = \""+arr[4]+"\", grade = \""+arr[5]+"\", workName = \""+arr[6]+"\", name = \""+arr[7]+"\", path = \""+arr[8]+"\"";
     	try {
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {

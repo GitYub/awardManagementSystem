@@ -10,22 +10,24 @@ import javafx.beans.property.StringProperty;
  */
 public class Person {
 
-    private final StringProperty major;
-    private final StringProperty classNum;
-    private final StringProperty name;
-    private final StringProperty studentID;
-    private final StringProperty compettition;
-    private final StringProperty time;
+    private final StringProperty timeYear;
+    private final StringProperty timeMonth;
+    private final StringProperty timeAll;
     private final StringProperty level;
     private final StringProperty prize;
+    private final StringProperty levelAll;
+    private final StringProperty major;
+    private final StringProperty grade;
+    private final StringProperty majorAll;
     private final StringProperty workName;
+    private final StringProperty name;
     private final StringProperty path;
 
     /**
      * Default constructor.
      */
     public Person() {
-        this(null, null, null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -34,17 +36,55 @@ public class Person {
      * @param firstName
      * @param lastName
      */
-    public Person(String major, String classNum, String name, String studentID, String time, String compettition, String level, String prize, String workName, String path) {
-        this.major = new SimpleStringProperty(major);
-        this.classNum = new SimpleStringProperty(classNum);
-        this.name = new SimpleStringProperty(name);
-        this.studentID = new SimpleStringProperty(studentID);
-        this.time = new SimpleStringProperty(time);
-        this.compettition = new SimpleStringProperty(compettition);
-        this.level = new SimpleStringProperty(level);
+    public Person(String timeYear, String timeMonth, String level, String prize, String major, String grade, String workName, String name, String path) {
+    	this.timeYear = new SimpleStringProperty(timeYear);
+    	this.timeMonth = new SimpleStringProperty(timeMonth);
+    	this.level = new SimpleStringProperty(level);
         this.prize = new SimpleStringProperty(prize);
+    	this.major = new SimpleStringProperty(major);
+        this.grade = new SimpleStringProperty(grade);
         this.workName = new SimpleStringProperty(workName);
+        this.name = new SimpleStringProperty(name);
         this.path = new SimpleStringProperty(path);
+        this.timeAll = new SimpleStringProperty(timeYear+timeMonth);
+        this.levelAll = new SimpleStringProperty(level+prize);
+        this.majorAll = new SimpleStringProperty(major+grade);
+    }
+
+    public String getTimeAll() {
+        return timeAll.get();
+    }
+
+    public void setTimeAll(String timeAll) {
+        this.timeAll.set(timeAll);
+    }
+
+    public StringProperty timeAllProperty() {
+        return timeAll;
+    }
+
+    public String getLevelAll() {
+        return levelAll.get();
+    }
+
+    public void setLevelAll(String levelAll) {
+        this.levelAll.set(levelAll);
+    }
+
+    public StringProperty levelAllProperty() {
+        return levelAll;
+    }
+
+    public String getMajorAll() {
+        return majorAll.get();
+    }
+
+    public void setMajorAll(String majorAll) {
+        this.majorAll.set(majorAll);
+    }
+
+    public StringProperty majorAllProperty() {
+        return majorAll;
     }
 
     public String getMajor() {
@@ -59,16 +99,16 @@ public class Person {
         return major;
     }
 
-    public String getClassNum() {
-        return classNum.get();
+    public String getTimeYear() {
+        return timeYear.get();
     }
 
-    public void setClassNum(String classNum) {
-        this.classNum.set(classNum);
+    public void setTimeYear(String timeYear) {
+        this.timeYear.set(timeYear);
     }
 
-    public StringProperty classNumProperty() {
-        return classNum;
+    public StringProperty timeYearProperty() {
+        return timeYear;
     }
 
     public String getName() {
@@ -83,16 +123,16 @@ public class Person {
         return name;
     }
 
-    public String getStudentID() {
-        return studentID.get();
+    public String getTimeMonth() {
+        return timeMonth.get();
     }
 
-    public void setStudentID(String studentID) {
-        this.studentID.set(studentID);
+    public void setTimeMonth(String timeMonth) {
+        this.timeMonth.set(timeMonth);
     }
 
-    public StringProperty studentIDProperty() {
-        return studentID;
+    public StringProperty TimeMonthProperty() {
+        return timeMonth;
     }
 
     public String getLevel() {
@@ -131,28 +171,16 @@ public class Person {
         return workName;
     }
 
-    public String getCompettition() {
-        return compettition.get();
+    public String getGrade() {
+        return grade.get();
     }
 
-    public void setCompettition(String compettition) {
-        this.compettition.set(compettition);
+    public void setGrade(String grade) {
+        this.grade.set(grade);
     }
 
-    public StringProperty compettitionProperty() {
-        return compettition;
-    }
-
-    public String getTime() {
-        return time.get();
-    }
-
-    public void setTime(String time) {
-        this.time.set(time);
-    }
-
-    public StringProperty timeProperty() {
-        return time;
+    public StringProperty gradeProperty() {
+        return grade;
     }
 
     public String getPath() {

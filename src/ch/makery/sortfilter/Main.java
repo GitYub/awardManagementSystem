@@ -28,6 +28,11 @@ public class Main extends Application {
         primaryStage.getIcons().add(
  		new Image("file:resources/images/address_book_32.png"));
 
+        Sql sql = new Sql();
+        sql.connect();
+        sql.checkTable();
+        sql.close();
+
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("PersonTable.fxml"));
             AnchorPane page = (AnchorPane) loader.load();

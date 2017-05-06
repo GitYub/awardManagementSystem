@@ -1,14 +1,14 @@
 package ch.makery.sortfilter;
 
 import java.io.File;
-import ch.makery.sortfilter.Person;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 /**
  * Dialog to edit details of a person.
  *
@@ -17,29 +17,33 @@ import javafx.stage.Stage;
 public class PersonEditDialogController {
 
     @FXML
-    private TextField majorField;
-    @FXML
-    private TextField classField;
-    @FXML
     private TextField nameField;
     @FXML
-    private TextField studentIDField;
-    @FXML
-    private TextField timeField;
-    @FXML
-    private TextField compettitionField;
-    @FXML
-    private TextField levelField;
-    @FXML
-    private TextField prizeField;
-    @FXML
     private TextField workNameField;
+    @FXML
+    ChoiceBox<Object> cbTimeYear = new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Object> cbTimeMonth = new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Object> cbLevel = new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Object> cbPrize= new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Object> cbMajor = new ChoiceBox<>();
+    @FXML
+    ChoiceBox<Object> cbGrade = new ChoiceBox<>();
+/**
+    @FXML
+	ImageView aa = new ImageView();*/
 
     private Stage dialogStage;
     private Person person;
     private String fileName;
     private String fileOldPath;
     private String[] pathArr;
+
+    //FileInputStream input = null;
+
     private boolean fileSel = false;
     private boolean pathField = false;
     private boolean okClicked = false;
@@ -50,6 +54,24 @@ public class PersonEditDialogController {
      */
     @FXML
     private void initialize() {
+    	cbTimeYear.setItems(FXCollections.observableArrayList(
+                "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020")
+            );
+    	cbTimeMonth.setItems(FXCollections.observableArrayList(
+                "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+            );
+    	cbLevel.setItems(FXCollections.observableArrayList(
+    			"J", "G", "S", "X")
+            );
+    	cbPrize.setItems(FXCollections.observableArrayList(
+    			"T", "1", "2", "3")
+            );
+    	cbMajor.setItems(FXCollections.observableArrayList(
+                "R", "X")
+            );
+    	cbGrade.setItems(FXCollections.observableArrayList(
+                "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
+            );
     }
 
     /**
@@ -70,15 +92,14 @@ public class PersonEditDialogController {
         this.person = person;
 
         if(person != null) {
-        	majorField.setText(person.getMajor());
-            classField.setText(person.getClassNum());
-            nameField.setText(person.getName());
-            studentIDField.setText(person.getStudentID());
-            compettitionField.setText(person.getCompettition());
-            levelField.setText(person.getLevel());
-            prizeField.setText(person.getPrize());
+        	cbTimeYear.setValue(person.getTimeYear());
+        	cbTimeMonth.setValue(person.getTimeMonth());
+        	cbLevel.setValue(person.getLevel());
+        	cbPrize.setValue(person.getPrize());
+        	cbMajor.setValue(person.getMajor());
+        	cbGrade.setValue(person.getGrade());
             workNameField.setText(person.getWorkName());
-            timeField.setText(person.getTime());
+            nameField.setText(person.getName());
             if(person.getPath() != null) {
             	pathField = true;
             }
@@ -108,10 +129,22 @@ public class PersonEditDialogController {
         	fileSel = true;
         	fileName = file.getName();
         	fileOldPath = file.getPath();
+
         	String b = (fileName.split("\\."))[0];
         	String a = (fileOldPath.split(b))[0];
         	a = a.substring(0, a.length()-1);
         	pathArr = a.split("\\\\");
+
+        	/**
+			try {
+				input = new FileInputStream(file.getPath());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+        	Image image = new Image(input);
+			aa.setImage(image);*/
         }
         else {
         	fileSel = false;
@@ -124,17 +157,26 @@ public class PersonEditDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-        	String oldName = person.getClassNum()+person.getName()+person.getWorkName();
-            person.setMajor(majorField.getText());
-            person.setClassNum(classField.getText());
+        	/**
+        	try {
+				input.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+        	String oldName = person.getTimeAll()+person.getLevelAll()+person.getMajorAll()+"_"+person.getWorkName()+"_"+person.getName();
+            person.setTimeYear((String)cbTimeYear.getValue());
+            person.setTimeMonth((String)cbTimeMonth.getValue());
+            person.setTimeAll(person.getTimeYear()+person.getTimeMonth());
+            person.setLevel((String)cbLevel.getValue());
+            person.setPrize((String)cbPrize.getValue());
+            person.setLevelAll(person.getLevel()+person.getPrize());
+            person.setMajor((String)cbMajor.getValue());
+            person.setGrade((String)cbGrade.getValue());
+            person.setMajorAll(person.getMajor()+person.getGrade());
             person.setName(nameField.getText());
-            person.setStudentID(studentIDField.getText());
-            person.setCompettition(compettitionField.getText());
-            person.setLevel(levelField.getText());
-            person.setPrize(prizeField.getText());
             person.setWorkName(workNameField.getText());
-            person.setTime(timeField.getText());
-            String newName = person.getClassNum()+person.getName()+person.getWorkName();
+            String newName = person.getTimeAll()+person.getLevelAll()+person.getMajorAll()+"_"+person.getWorkName()+"_"+person.getName();
 
             if(pathField == false && fileSel == true) {
             	String newStr = "";
@@ -198,9 +240,8 @@ public class PersonEditDialogController {
                         }
             		}
 
-            		System.out.println(myStr);
             		File oldFile2 = new File(fileOldPath);
-            		myStr += person.getClassNum()+person.getName()+person.getWorkName()+".jpg";
+            		myStr += person.getTimeAll()+person.getLevelAll()+person.getMajorAll()+"_"+person.getWorkName()+"_"+person.getName() + ".jpg";
 
                     oldFile2.renameTo(new File(myStr));
 
@@ -210,7 +251,7 @@ public class PersonEditDialogController {
                     	myStr += pathArr[i];
                     	myStr += "\\\\";
                     }while(++i < pathArr.length);
-                    myStr += person.getClassNum()+person.getName()+person.getWorkName()+".jpg";
+                    myStr += person.getTimeAll()+person.getLevelAll()+person.getMajorAll()+"_"+person.getWorkName()+"_"+person.getName()+".jpg";
                     person.setPath(myStr);
             	}
             }
@@ -222,7 +263,7 @@ public class PersonEditDialogController {
             		myStr += tmp;
             		myStr += "\\\\";
             	}
-            	myStr += person.getClassNum()+person.getName()+person.getWorkName()+".jpg";
+            	myStr += person.getTimeAll()+person.getLevelAll()+person.getMajorAll()+"_"+person.getWorkName()+"_"+person.getName()+".jpg";
             	String oldPath = person.getPath();
             	File oldFile = new File(oldPath);
                 oldFile.renameTo(new File(myStr));
@@ -250,40 +291,36 @@ public class PersonEditDialogController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (majorField.getText() == null || majorField.getText().length() == 0) {
-            errorMessage += "专业为空!\n";
+        if (cbTimeYear.getValue() == null) {
+            errorMessage += "年份为空!\n";
         }
 
-        if (nameField.getText() == null || nameField.getText().length() == 0) {
-            errorMessage += "姓名为空!\n";
+        if (cbTimeMonth.getValue() == null) {
+            errorMessage += "月份为空!\n";
         }
 
-        if (studentIDField.getText() == null || studentIDField.getText().length() == 0) {
-            errorMessage += "学号为空!\n";
-        }
-
-        if (compettitionField.getText() == null || compettitionField.getText().length() == 0) {
-            errorMessage += "比赛为空!\n";
-        }
-
-        if (levelField.getText() == null || levelField.getText().length() == 0) {
+        if (cbLevel.getValue() == null) {
             errorMessage += "等级为空!\n";
         }
 
-        if (prizeField.getText() == null || prizeField.getText().length() == 0) {
+        if (cbPrize.getValue() == null) {
             errorMessage += "奖次为空!\n";
         }
 
+        if (cbMajor.getValue() == null) {
+            errorMessage += "专业为空!\n";
+        }
+
+        if (cbGrade.getValue() == null) {
+            errorMessage += "年级为空!\n";
+        }
+
+        if (nameField.getText() == null) {
+            errorMessage += "姓名为空!\n";
+        }
+
         if (workNameField.getText() == null || workNameField.getText().length() == 0) {
-            errorMessage += "作品名称为空!\n";
-        }
-
-        if (classField.getText() == null || classField.getText().length() == 0) {
-            errorMessage += "班级为空!\n";
-        }
-
-        if (timeField.getText() == null || timeField.getText().length() == 0) {
-            errorMessage += "时间为空!\n";
+            errorMessage += "奖项名称为空!\n";
         }
 
         if (fileSel == false && pathField == false) {
